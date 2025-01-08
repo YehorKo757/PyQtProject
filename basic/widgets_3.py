@@ -15,7 +15,11 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("My App")
 
         widget = QComboBox()
+        widget.setEditable(True)
         widget.addItems(["one", "two", "three"])
+        widget.setInsertPolicy(QComboBox.InsertPolicy.InsertAtBottom)
+        # Limit the number of items allowed to 10
+        widget.setMaxCount(10)
 
         widget.currentIndexChanged.connect(self.index_changed)
         widget.currentTextChanged.connect(self.text_changed)
