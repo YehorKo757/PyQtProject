@@ -14,18 +14,24 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget = QListWidget()
-        widget.addItems(["one", "two", "three"])
+        self.lwidget = QListWidget()
+        self.lwidget.addItems(["one", "two", "three"])
+        self.lwidget.setSelectionMode(QListWidget.SelectionMode.MultiSelection)
 
-        widget.currentItemChanged.connect(self.item_changed)
-        widget.currentTextChanged.connect(self.text_changed)
+        #self.lwidget.currentItemChanged.connect(self.item_changed)
+        #self.lwidget.currentTextChanged.connect(self.text_changed)
+        self.lwidget.selectionModel().selectionChanged.connect(self.selection_changed)
 
-        self.setCentralWidget(widget)
+        self.setCentralWidget(self.lwidget)
 
 
     def item_changed(self, i):
         print(i.text())
 
+
+    def selection_changed(self):
+        # We get the currently selected items via the widget.
+        print("Selected items: ", [item.text() for item in self.lwidget.selectedItems()])
 
     def text_changed(self, s):
         print(s)
