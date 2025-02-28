@@ -8,6 +8,7 @@ QLineEdit,
 QMainWindow,
 QSpinBox,
 QWidget,
+QLabel,
 )
 
 
@@ -18,7 +19,11 @@ class MainWindow(QMainWindow):
 
         layout = QFormLayout()
 
-        self.data = {}
+        self.data = {
+            "name": "",
+            "age": 0,
+            "favorite_icecream": "",
+        }
 
         self.name = QLineEdit()
         self.name.textChanged.connect(self.handle_name_changed)
@@ -33,6 +38,9 @@ class MainWindow(QMainWindow):
         layout.addRow("Age", self.age)
         layout.addRow("Favorite Ice cream", self.icecream)
 
+        self.error = QLabel()
+        layout.addWidget(self.error)
+
         widget = QWidget()
         widget.setLayout(layout)
         self.setCentralWidget(widget)
@@ -40,16 +48,25 @@ class MainWindow(QMainWindow):
 
     def handle_name_changed(self, name):
         self.data["name"] = name
-        print(self.data)
+        self.validate()
 
     def handle_age_changed(self, age):
         self.data["age"] = age
-        print(self.data)
-
+        self.validate()
 
     def handle_icecream_changed(self, icecream):
         self.data["favorite_icecream"] = icecream
-        print(self.data)
+        self.validate()
+
+    def validate(self):
+        if self.data["age"] > 10 and self.data["favorite_icecream"] == "Chocolate":
+            self.error.setText("People over 10 aren't allowed chocolate ice cream")
+            return
+        if self.data["age"] > 100:
+            self.error.setText("Did you send a telegram?")
+            return
+
+        self.error.setText("")
 
 
 app = QApplication(sys.argv)
